@@ -3,29 +3,46 @@ const parameterAge = document.getElementById('age');
 const parameterHeight = document.getElementById('height');
 const parameterWeight = document.getElementById('weight');
 
+const genderMale = document.getElementById('gender-male');
+const genderFemale = document.getElementById('gender-female');
+
+const activMin = document.getElementById('activity-minimal');
+const activLow = document.getElementById('activity-low');
+const activMedium = document.getElementById('activity-medium');
+const activHigh = document.getElementById('activity-high');
+const activMax = document.getElementById('activity-maximal');
+
 const buttonCalculate = document.getElementById('btn');
 const buttonReset = document.querySelector('.form__reset-button');
 
-parameterAge.addEventListener('keyup', activateCalcButton);
-parameterHeight.addEventListener('keyup', activateCalcButton);
-parameterWeight.addEventListener('keyup', activateCalcButton);
+parameterAge.addEventListener('input', activateCalcButton);
+parameterHeight.addEventListener('input', activateCalcButton);
+parameterWeight.addEventListener('input', activateCalcButton);
 
 function activateCalcButton() {
     if (parameterAge.value === '' || parameterHeight.value === '' || parameterWeight.value === '') {
-        return buttonCalculate.setAttribute('disabled', '');
+        buttonCalculate.setAttribute('disabled', '');
     } else {
-        return buttonCalculate.removeAttribute('disabled'); 
+        buttonCalculate.removeAttribute('disabled'); 
     }
 };
 
-parameterAge.addEventListener('keyup', activateResetButton);
-parameterHeight.addEventListener('keyup', activateResetButton);
-parameterWeight.addEventListener('keyup', activateResetButton);
+parameterAge.addEventListener('change', activateResetButton);
+parameterHeight.addEventListener('change', activateResetButton);
+parameterWeight.addEventListener('change', activateResetButton);
+
+genderMale.addEventListener('change', function() {
+    buttonReset.setAttribute('disabled', '');
+});
+
+genderFemale.addEventListener('change', function() {
+    buttonReset.removeAttribute('disabled'); 
+});
 
 function activateResetButton() {
     if (parameterAge.value === '' && parameterHeight.value === '' && parameterWeight.value === '') {
-        return buttonReset.setAttribute('disabled', '');
+        buttonReset.setAttribute('disabled', '');
     } else {
-        return buttonReset.removeAttribute('disabled'); 
+        buttonReset.removeAttribute('disabled'); 
     }
 };
