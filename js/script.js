@@ -3,15 +3,7 @@ const parameterAge = document.getElementById('age');
 const parameterHeight = document.getElementById('height');
 const parameterWeight = document.getElementById('weight');
 
-const genderMale = document.getElementById('gender-male');
-const genderFemale = document.getElementById('gender-female');
-
-const activMin = document.getElementById('activity-minimal');
-const activLow = document.getElementById('activity-low');
-const activMedium = document.getElementById('activity-medium');
-const activHigh = document.getElementById('activity-high');
-const activMax = document.getElementById('activity-maximal');
-
+const form = document.querySelector('.counter__form.form');
 const buttonCalculate = document.getElementById('btn');
 const buttonReset = document.querySelector('.form__reset-button');
 
@@ -27,22 +19,14 @@ function activateCalcButton() {
     }
 };
 
-parameterAge.addEventListener('change', activateResetButton);
-parameterHeight.addEventListener('change', activateResetButton);
-parameterWeight.addEventListener('change', activateResetButton);
-
-genderMale.addEventListener('change', function() {
-    buttonReset.setAttribute('disabled', '');
-});
-
-genderFemale.addEventListener('change', function() {
-    buttonReset.removeAttribute('disabled'); 
-});
-
-function activateResetButton() {
-    if (parameterAge.value === '' && parameterHeight.value === '' && parameterWeight.value === '') {
-        buttonReset.setAttribute('disabled', '');
+form.addEventListener('change', function() {
+    if (!form) {
+        buttonReset.disabled = true;
     } else {
-        buttonReset.removeAttribute('disabled'); 
+        buttonReset.disabled = false;
     }
-};
+});
+
+    buttonReset.addEventListener('click', function() {
+        buttonReset.disabled = true;
+    });
