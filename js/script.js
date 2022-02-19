@@ -1,20 +1,14 @@
-// "calculate" button and "clear fields and calculation" button
 const parameterAge = document.getElementById('age');
 const parameterHeight = document.getElementById('height');
 const parameterWeight = document.getElementById('weight');
 
-const male = document.getElementById('gender-male');
-const female = document.getElementById('gender-female');
-const genderSwitcher = document.querySelector('.switcher');
+const switcher = document.querySelector('.switcher');
+const gender = switcher.querySelectorAll('input');
+let actualGender;
 
 const activityRadio = document.querySelector('.radios-group');
-const activity = document.getElementsByName('activity');
-
-const min = 1.2;
-const low = 1.375;
-const medium = 1.55;
-const high = 1.725;
-const max = 1.9;
+const activity = activityRadio.querySelectorAll('input');
+let actualActivity;
 
 const form = document.querySelector('.counter__form.form');
 const counterResult = document.getElementById('counter-result');
@@ -40,41 +34,76 @@ form.addEventListener('change', function() {
 
 buttonReset.addEventListener('click', function() {
 
-    buttonReset.setAttribute('disabled', '');
+    buttonCalculate.setAttribute('disabled', '');
 
     counterResult.classList.add('counter__result--hidden');
-})
+});
 
-buttonCalculate.addEventListener('click', function(e) {
-    e.preventDefault();
+buttonCalculate.addEventListener('click', function(evt) {
+    evt.preventDefault();
 
     resultCalculation();
+
+    document.getElementById('calories-norm').textContent = getCaloriesNormalize();
+    document.getElementById('calories-minimal').textContent = getCaloriesMin();
+    document.getElementById('calories-maximal').textContent = getCaloriesMax();
 });
 
-genderSwitcher.addEventListener('change', function() {
-    if (male.checked) {
-        female.removeAttribute('checked');
-        male.setAttribute('checked', '');
-    } else if (female.checked) {
-        male.removeAttribute('checked');
-        female.setAttribute('checked', '');
-    }
-});
+switcher.addEventListener('click', choiceGender);
 
-activityRadio.addEventListener('change', function(activity) {
-    for (let i = 0; i < activity.length; i++) {
-        if (activity[i].checked) {
-            return activity[i];
+function choiceGender(evt) {
+
+    for (let i = 0; i < gender.length; i++) {
+        if (evt.target != gender[i]) {
+            gender[i].removeAttribute('checked');
+        } else {
+            gender[i].setAttribute('checked', '')
+        };
+
+        if (gender[i].checked) {
+            actualGender = Number(gender[i].dataset.gender);
         }
     }
-});
+};
 
-function resultCalculation(parameterAge, parameterHeight, parameterWeight) {
+activityRadio.addEventListener('click', choiceActivity);
+
+function choiceActivity(evt) {
+    const elementType = 'input';
+
+    if (evt.target.tagName.toLowerCase() != elementType) {
+        return;
+    }
+
+    for (let i = 0; i < activity.length; i++) {
+        if (evt.target != activity[i]) {
+            activity[i].removeAttribute('checked')
+        } else {
+            activity[i].setAttribute('checked', '')
+        };
+
+        if (activity[i].checked) {
+            actualActivity = Number(activity[i].dataset.activity);
+        }
+    }
+};
+
+function resultCalculation() {
     counterResult.classList.remove('counter__result--hidden');
+};
 
-    if (male.checked) {
-        let femaleResult = (10 * parameterWeight) + (6.25 * parameterHeight) - (5 * parameterAge) + 5;
-    } else if (female.checked) {
-        let femaleResult = (10 * parameterWeight) + (6.25 * parameterHeight) - (5 * parameterAge) - 161;
-    };
-}
+function getCaloriesNormalize() {
+    const weight = 10 * parameterWeight.value;
+    const height = 6.25 * parameterHeight.value;
+    const age = 5 * parameterAge.value;
+    
+    return Math.round((weight + height - age + actualGender) * actualActivity);
+};
+
+function getCaloriesMax() {
+    return Math.round(getCaloriesNormalize() + (getCaloriesNormalize() * 0.15));
+};
+
+function getCaloriesMin() {
+    return Math.round(getCaloriesNormalize() - (getCaloriesNormalize() * 0.15));
+};
