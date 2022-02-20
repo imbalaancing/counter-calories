@@ -4,13 +4,18 @@ const parameterWeight = document.getElementById('weight');
 
 const switcher = document.querySelector('.switcher');
 const gender = switcher.querySelectorAll('input');
-let actualGender;
+let actualGender = 5;
 
 const activityRadio = document.querySelector('.radios-group');
 const activity = activityRadio.querySelectorAll('input');
-let actualActivity;
+let actualActivity = 1.2;
 
-const form = document.querySelector('.counter__form.form');
+const weightCoefficient = 10;
+const heightCoefficient = 6.25;
+const ageCoefficient = 5;
+
+const form = document.getElementById('form');
+const formInputs = form.querySelectorAll('.input');
 const counterResult = document.getElementById('counter-result');
 
 const buttonCalculate = document.getElementById('btn');
@@ -33,20 +38,15 @@ form.addEventListener('change', function() {
 });
 
 buttonReset.addEventListener('click', function() {
-
     buttonCalculate.setAttribute('disabled', '');
-
     counterResult.classList.add('counter__result--hidden');
+    setDefaultParameters();
 });
 
 buttonCalculate.addEventListener('click', function(evt) {
     evt.preventDefault();
-
-    resultCalculation();
-
-    document.getElementById('calories-norm').textContent = getCaloriesNormalize();
-    document.getElementById('calories-minimal').textContent = getCaloriesMin();
-    document.getElementById('calories-maximal').textContent = getCaloriesMax();
+    showBlockResult();
+    getAllCalories();
 });
 
 switcher.addEventListener('click', choiceGender);
@@ -88,14 +88,14 @@ function choiceActivity(evt) {
     }
 };
 
-function resultCalculation() {
+function showBlockResult() {
     counterResult.classList.remove('counter__result--hidden');
 };
 
 function getCaloriesNormalize() {
-    const weight = 10 * parameterWeight.value;
-    const height = 6.25 * parameterHeight.value;
-    const age = 5 * parameterAge.value;
+    const weight = weightCoefficient * parameterWeight.value;
+    const height = heightCoefficient * parameterHeight.value;
+    const age = ageCoefficient * parameterAge.value;
     
     return Math.round((weight + height - age + actualGender) * actualActivity);
 };
@@ -107,3 +107,36 @@ function getCaloriesMax() {
 function getCaloriesMin() {
     return Math.round(getCaloriesNormalize() - (getCaloriesNormalize() * 0.15));
 };
+
+function getAllCalories() {
+    document.getElementById('calories-norm').textContent = getCaloriesNormalize();
+    document.getElementById('calories-minimal').textContent = getCaloriesMin();
+    document.getElementById('calories-maximal').textContent = getCaloriesMax();
+};
+
+function setDefaultParameters() {
+    const defaultActivity = document.getElementById('activity-minimal');
+    const defaultGender = document.getElementById('gender-male');
+    
+    for (let i = 0; i < formInputs.length; i++) {
+        formInputs[i].value = '';
+    };
+
+    for (let i = 0; i < activity.length; i++) {
+        if (activity[i] != defaultActivity) {
+            activity[i].removeAttribute('checked');
+        } else {
+            defaultActivity.setAttribute('checked', '');
+        }
+    };
+
+    for (let i = 0; i < gender.length; i++) {
+        if (gender[i] != defaultGender) {
+            gender[i].removeAttribute('checked');
+        } else {
+            defaultGender.setAttribute('checked', '');
+        }
+    };
+};
+
+
