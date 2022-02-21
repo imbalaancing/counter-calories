@@ -15,7 +15,7 @@ const heightCoefficient = 6.25;
 const ageCoefficient = 5;
 
 const form = document.getElementById('form');
-const formInputs = form.querySelectorAll('.input');
+const parametersInputs = form.querySelectorAll('input[type="number"]');
 const counterResult = document.getElementById('counter-result');
 
 const buttonCalculate = document.getElementById('btn');
@@ -40,7 +40,7 @@ form.addEventListener('change', function() {
 buttonReset.addEventListener('click', function() {
     buttonCalculate.setAttribute('disabled', '');
     counterResult.classList.add('counter__result--hidden');
-    setDefaultParameters();
+    setDefaultParameters(); 
 });
 
 buttonCalculate.addEventListener('click', function(evt) {
@@ -52,7 +52,6 @@ buttonCalculate.addEventListener('click', function(evt) {
 switcher.addEventListener('click', choiceGender);
 
 function choiceGender(evt) {
-
     for (let i = 0; i < gender.length; i++) {
         if (evt.target != gender[i]) {
             gender[i].removeAttribute('checked');
@@ -118,8 +117,8 @@ function setDefaultParameters() {
     const defaultActivity = document.getElementById('activity-minimal');
     const defaultGender = document.getElementById('gender-male');
     
-    for (let i = 0; i < formInputs.length; i++) {
-        formInputs[i].value = '';
+    for (let i = 0; i < parametersInputs.length; i++) {
+        parametersInputs[i].value = '';
     };
 
     for (let i = 0; i < activity.length; i++) {
