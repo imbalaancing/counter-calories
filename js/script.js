@@ -19,13 +19,11 @@ const resultCaloriesNormal = document.getElementById('calories-norm');
 const resultCaloriesMin = document.getElementById('calories-minimal');
 const resultCaloriesMax =  document.getElementById('calories-maximal');
 
-/** coefficient values depending on gender used to calculate calories. */
 const genderParameters = {
     'male': 5,
     'female': -161,
 };
 
-/** activity values. */
 const activityParameters = {
     'min': 1.2,
     'low': 1.375,
@@ -34,7 +32,6 @@ const activityParameters = {
     'max': 1.9,
 };
 
-/** default state values. */
 const currentState = {
     gender: 'male',
     weight: null,
@@ -43,7 +40,6 @@ const currentState = {
     activity: 'min',
 };
 
-/** parameter coefficients for calculation. */
 const coefParameters = {
     weight: 10,
     height: 6.25,
@@ -78,7 +74,9 @@ buttonCalculate.addEventListener('click', function(evt) {
     getAllCalories();
 });
 
-/** activation / deactivation of the "calculate" button when entering parameters by the user. */
+/** 
+ * activation/deactivation of the "calculate" button
+*/
 function activateCalcButton() {
     if (parameterAge.value === '' || parameterHeight.value === '' || parameterWeight.value === '') {
         buttonCalculate.setAttribute('disabled', '');
@@ -87,7 +85,9 @@ function activateCalcButton() {
     }
 };
 
-/** adding a checked attribute to the gender that the user selects. */
+/**
+ * user gender selection
+*/
 function choiceGender(evt) {
     if (evt.target.tagName.toLowerCase() != 'input') {
         return;
@@ -102,7 +102,9 @@ function choiceGender(evt) {
     }
 };
 
-/** adding a checked attribute to the activity that the user selects and assigning the value of this activity to the current state object. */
+/**
+ * user activity selection
+*/
 function choiceActivity(evt) {
     if (evt.target.tagName.toLowerCase() != 'input') {
         return;
@@ -136,12 +138,16 @@ function choiceActivity(evt) {
     }
 };
 
-/** showing a block with results. */
+/** 
+ * showing a block with results 
+*/
 function showBlockResult() {
     counterResult.classList.remove('counter__result--hidden');
 };
 
-/** calculating calories to maintain weight. */
+/**  
+ * calculating calories to maintain weight
+*/
 function getCaloriesNormalize() {
     const weight = coefParameters.weight * parameterWeight.value;
     const height = coefParameters.height * parameterHeight.value;
@@ -150,24 +156,32 @@ function getCaloriesNormalize() {
     return Math.round((weight + height - age + getActualGender()) * getActualActivity());
 };
 
-/** calculating calories for weight gain. */
+/** 
+ * calculating calories for weight gain 
+*/
 function getCaloriesMax() {
     return Math.round(getCaloriesNormalize() + (getCaloriesNormalize() * weightModificator));
 };
 
-/** calculating calories for weight loss. */
+/** 
+ * calculating calories for weight loss 
+*/
 function getCaloriesMin() {
     return Math.round(getCaloriesNormalize() - (getCaloriesNormalize() * weightModificator));
 };
 
-/** showing calories to maintain/gain/lose weight in the resulting block. */
+/** 
+ * showing calories to maintain/gain/lose weight in the resulting block
+*/
 function getAllCalories() {
     resultCaloriesNormal.textContent = getCaloriesNormalize();
     resultCaloriesMin.textContent = getCaloriesMin();
     resultCaloriesMax.textContent = getCaloriesMax();
 };
 
-/** getting the values of the actual gender selected by the user. */
+/**  
+ * getting the values of the actual gender selected by the user
+*/
 function getActualGender() {
     switch (currentState.gender) {
         case 'male': 
@@ -178,7 +192,9 @@ function getActualGender() {
     }
 };
 
-/** getting the values of the actual activity selected by the user. */
+/** 
+ * getting the values of the actual activity selected by the user
+*/
 function getActualActivity() {
     switch (currentState.activity) {
         case 'min':
@@ -194,7 +210,9 @@ function getActualActivity() {
     }
 };
 
-/** reset gender selection to default. */
+/** 
+ * reset gender selection
+*/
 function setDefaultGender() {
     const defaultGender = document.getElementById('gender-male');
 
@@ -207,14 +225,18 @@ function setDefaultGender() {
     };
 };
 
-/** resetting user-entered values to their default state. */
+/** 
+ * reset parameters entered by the user 
+*/
 function setDefaultUserParameters() {
     for (let i = 0; i < userParameters.length; i++) {
         userParameters[i].value = '';
     };
 };
 
-/** reset activity selection to default. */
+/** 
+ * activity reset
+*/
 function setDefaultActivity() {
     const defaultActivity = document.getElementById('activity-minimal');
     
